@@ -5,6 +5,7 @@ const database = require("../database");
 
 afterAll(() => database.end());
 
+// test le retour de l'ensemble des users
 describe("GET /api/users", () => {
   it("should return all users", async () => {
     const response = await request(app).get("/api/users");
@@ -13,6 +14,7 @@ describe("GET /api/users", () => {
   });
 });
 
+//test la réception d'un seul user
 describe("GET /api/users/:id", () => {
   it("should return one user", async () => {
     const response = await request(app).get("/api/users/1");
@@ -25,6 +27,7 @@ describe("GET /api/users/:id", () => {
   });
 });
 
+// test l'ajout d'un user 
 describe("POST /api/users", () => {
   it("should return created user", async () => {
     const newUser = {

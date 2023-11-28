@@ -3,6 +3,7 @@ const app = require("../src/app");
 const database = require("../database");
 afterAll(() => database.end());
 
+// test la récupération de l'ensemble des movies
 describe("GET /api/movies", () => {
   it("should return all movies", async () => {
     const response = await request(app).get("/api/movies");
@@ -11,6 +12,7 @@ describe("GET /api/movies", () => {
   });
 });
 
+// teste la récupération d'un seul movies en fonction de l'ID
 describe("GET /api/movies/:id", () => {
   it("should return one movie", async () => {
     const response = await request(app).get("/api/movies/1");
@@ -23,6 +25,7 @@ describe("GET /api/movies/:id", () => {
   });
 });
 
+// test l'ajout d'un movie 
 describe("POST /api/movies", () => {
   it("should return created movie", async () => {
     const newMovie = {
