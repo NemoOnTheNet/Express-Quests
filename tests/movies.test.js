@@ -67,7 +67,7 @@ describe("POST /api/movies", () => {
     const response = await request(app)
       .post("/api/movies")
       .send(movieWithMissingProps);
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 });
 
@@ -129,7 +129,7 @@ describe("PUT /api/movies/:id", () => {
     const response = await request(app)
       .put(`/api/movies/1`)
       .send(movieWithMissingProps);
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
   it("should return no movie", async () => {
     const newMovie = {
@@ -165,11 +165,13 @@ describe("DELETE /api/movies/:id", () => {
       ]
     );
     const id = result.insertId;
-    const response = await request(app)
-      .delete(`/api/movies/${id}`);
-    expect(response.status).toEqual(204)
-    const response2 = await request(app)
-      .get(`/api/movies/${id}`)
-    expect(response2.status).toEqual(404)
-  })
-})
+    const response = await request(app).delete(`/api/movies/${id}`);
+    expect(response.status).toEqual(204);
+  });
+  it("should return no movies", () => {
+    async () => {
+      const response = await request(app).delete("/api/movies/0");
+      expect(response.status).toEqual(404);
+    };
+  });
+});

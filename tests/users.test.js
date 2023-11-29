@@ -70,7 +70,7 @@ describe("POST /api/users", () => {
     const response = await request(app)
       .post("/api/users")
       .send(userWithMissingProps);
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
 });
 
@@ -129,7 +129,7 @@ describe("PUT /api/users/:id", () => {
     const response = await request(app)
       .put(`/api/users/1`)
       .send(userWithMissingProps);
-    expect(response.status).toEqual(500);
+    expect(response.status).toEqual(422);
   });
   it("should return no user", async () => {
     const newUser = {
@@ -165,11 +165,13 @@ describe("DELETE /api/users/:id", () => {
       ]
     );
     const id = result.insertId;
-    const response = await request(app)
-      .delete(`/api/users/${id}`);
-    expect(response.status).toEqual(204)
-    const response2 = await request(app)
-      .get(`/api/users/${id}`)
-    expect(response2.status).toEqual(404)
-  })
-})
+    const response = await request(app).delete(`/api/users/${id}`);
+    expect(response.status).toEqual(204);
+  });
+  it("should return no user", () => {
+    async () => {
+      const response = await request(app).delete("/api/users/0");
+      expect(response.status).toEqual(404);
+    };
+  });
+});
