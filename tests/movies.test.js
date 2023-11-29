@@ -143,3 +143,33 @@ describe("PUT /api/movies/:id", () => {
     expect(response.status).toEqual(404);
   });
 });
+
+//Test de suppression d'un movie
+describe("DELETE /api/movies/:id", () => {
+  it("should delete one movie", async () => {
+    const newMovie = {
+      title: "TestDelete",
+      director: "Delete",
+      year: "2023",
+      color: "1",
+      duration: 162,
+    };
+    const [result] = await database.query(
+      "INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
+      [
+        newMovie.title,
+        newMovie.director,
+        newMovie.year,
+        newMovie.color,
+        newMovie.duration,
+      ]
+    );
+    const id = result.insertId;
+    const response = await request(app)
+      .delete(`/api/movies/${id}`);
+    expect(response.status).toEqual(204)
+    const response2 = await request(app)
+      .get(`/api/movies/${id}`)
+    expect(response2.status).toEqual(404)
+  })
+})
